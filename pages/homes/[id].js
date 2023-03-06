@@ -1,0 +1,45 @@
+import Layout from '@/components/Layout';
+import React from 'react';
+import Image from 'next/image';
+
+const ListedHome = (home = null) => {
+  return (
+    <Layout>
+      <div className="max-w-screen-lg mx-auto">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:space-x-4 space-y-4">
+          <div>
+            <h1 className="text-2xl font-semibold truncate">
+              {home?.title ?? ''}
+            </h1>
+            <ol className="inline-flex items-center space-x-1 text-gray-500">
+              <li>
+                <span>{home?.guests ?? 0} guests</span>
+                <span aria-hidden="true"> . </span>
+              </li>
+              <li>
+                <span>{home?.beds ?? 0} beds</span>
+                <span aria-hidden="true"> . </span>
+              </li>
+              <li>
+                <span>{home?.baths ?? 0} baths</span>
+                <span aria-hidden="true"> . </span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div className="mt-6 relative aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg shadow-md overflow-hidden">
+        {home?.image ? (
+          <Image
+            src={home.image}
+            alt={home.title}
+            layout="fill"
+            objectFit="cover"
+          />
+        ) : null}
+
+        <p className="mt-8 text-lg">{home?.description ?? ''}</p>
+      </div>
+    </Layout>
+  );
+};
