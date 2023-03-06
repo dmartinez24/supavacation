@@ -30,16 +30,16 @@ const ListedHome = (home = null) => {
             </ol>
           </div>
         </div>
-      </div>
-      <div className="mt-6 relative aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg shadow-md overflow-hidden">
-        {home?.image ? (
-          <Image
-            src={home.image}
-            alt={home.title}
-            layout="fill"
-            objectFit="cover"
-          />
-        ) : null}
+        <div className="mt-6 relative aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg shadow-md overflow-hidden">
+          {home?.image ? (
+            <Image
+              src={home.image}
+              alt={home.title}
+              layout="fill"
+              objectFit="cover"
+            />
+          ) : null}
+        </div>
 
         <p className="mt-8 text-lg">{home?.description ?? ''}</p>
       </div>
@@ -57,6 +57,25 @@ export async function getStaticPaths() {
       params: { id: home.id },
     })),
     fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const home = await prisma.home.findUnique({
+    where: { id: params.id },
+  });
+
+  if (home) {
+    return {
+      props: JSON.parse(JSON.stringify(home)),
+    };
+  }
+
+  return {
+    redirect: {
+      destination: '/',
+      permanent: false,
+    },
   };
 }
 
