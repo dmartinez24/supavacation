@@ -1,6 +1,9 @@
 import Layout from '@/components/Layout';
 import React from 'react';
 import Image from 'next/image';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const ListedHome = (home = null) => {
   return (
@@ -43,3 +46,18 @@ const ListedHome = (home = null) => {
     </Layout>
   );
 };
+
+export async function getStaticPaths() {
+  const homes = await prisma.home.findMany({
+    select: { id: true },
+  });
+
+  return {
+    paths: homes.map((home) => ({
+      params: { id: home.id },
+    })),
+    fallback: false,
+  };
+}
+
+export default ListedHome;
