@@ -1,10 +1,8 @@
 import Layout from '@/components/Layout';
 import React from 'react';
 import Image from 'next/image';
-import { PrismaClient } from '@prisma/client';
 import { useRouter } from 'next/router';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../server/db/client';
 
 const ListedHome = (home = null) => {
   const router = useRouter();

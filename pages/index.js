@@ -1,8 +1,6 @@
-import Layout from "@/components/Layout";
-import Grid from "@/components/Grid";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import Layout from '@/components/Layout';
+import Grid from '@/components/Grid';
+import { prisma } from '../server/db/client';
 
 export default function Home({ homes = [] }) {
   return (
