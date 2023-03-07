@@ -65,19 +65,18 @@ const Layout = ({ children = null }) => {
         <header className="h-16 w-full shadow-md">
           <div className="h-full container mx-auto">
             <div className="h-full px-4 flex justify-between items-center space-x-4">
-              <Link href="/">
-                <a className="flex items-center space-x-1">
-                  <SparklesIcon className="shrink-0 w-8 h-8 text-rose-500" />
-                  <span className="text-xl font-semibold tracking-wide">
-                    Supa<span className="text-rose-600">Vacation</span>
-                  </span>
-                </a>
+              <Link href="/" className="flex items-center space-x-1">
+                <SparklesIcon className="shrink-0 w-8 h-8 text-rose-500" />
+                <span className="text-xl font-semibold tracking-wide">
+                  Supa<span className="text-rose-600">Vacation</span>
+                </span>
               </Link>
               <div className="flex items-center space-x-4">
-                <Link href="/create">
-                  <a className="hidden sm:block hover:bg-gray-200 transition px-3 py-1 rounded-md">
-                    List your home
-                  </a>
+                <Link
+                  href="/create"
+                  className="hidden sm:block hover:bg-gray-200 transition px-3 py-1 rounded-md"
+                >
+                  List your home
                 </Link>
                 {isLoadingUser ? (
                   <div className="h-8 w-[75px] bg-gray-200 animate-pulse rounded-md" />
@@ -136,11 +135,12 @@ const Layout = ({ children = null }) => {
                               >
                                 <Menu.Item>
                                   {href ? (
-                                    <Link href={href}>
-                                      <a className="flex items-center space-x-2 py-2 px-4 rounded-md hover:bg-gray-100">
-                                        <Icon className="w-5 h-5 shrink-0 text-gray-500" />
-                                        <span>{label}</span>
-                                      </a>
+                                    <Link
+                                      href={href}
+                                      className="flex items-center space-x-2 py-2 px-4 rounded-md hover:bg-gray-100"
+                                    >
+                                      <Icon className="w-5 h-5 shrink-0 text-gray-500" />
+                                      <span>{label}</span>
                                     </Link>
                                   ) : (
                                     <button
