@@ -1,13 +1,14 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { Dialog, Transition } from '@headlessui/react';
-import { SparklesIcon, MailOpenIcon, XIcon } from '@heroicons/react/outline';
+import { MailOpenIcon, SparklesIcon, XIcon } from '@heroicons/react/outline';
 import Input from './Input';
+import { signIn } from 'next-auth/react';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
@@ -69,6 +70,27 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
 
   const signInWithEmail = async ({ email }) => {
     // TODO: Perform email auth
+    let toastId;
+    try {
+      toastId = toast.loading('Loading...');
+      setDisabled(true);
+      const { error } = await signIn('email', {
+        redirect: false,
+        callbackUrl: window.location.href,
+        email,
+      });
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      setConfirm(true);
+      toast.dismiss(toastId);
+    } catch (e) {
+      toast.error('Unable to sign in', { id: toastId });
+    } finally {
+      setDisabled(false);
+    }
   };
 
   const signInWithGoogle = () => {
@@ -150,12 +172,10 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
                 <div className="px-4 sm:px-12">
                   <div className="flex justify-center">
                     <Link href="/" className="flex items-center space-x-1">
-
                       <SparklesIcon className="shrink-0 w-8 h-8 text-rose-500" />
                       <span className="text-xl font-semibold tracking-wide">
                         Supa<span className="text-rose-500">Vacation</span>
                       </span>
-
                     </Link>
                   </div>
 

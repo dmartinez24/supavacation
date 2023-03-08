@@ -4,6 +4,12 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '../../../server/db/client';
 
 export const authOptions = {
+  pages: {
+    signIn: '/',
+    signOut: '/',
+    error: '/',
+    verifyRequest: '/',
+  },
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
