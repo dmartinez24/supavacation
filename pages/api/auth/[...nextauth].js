@@ -42,6 +42,29 @@ const sendVerificationRequest = async ({ identifier, url }) => {
   }
 };
 
+const sendWelcomeEmail = async ({ user }) => {
+  const { email } = user;
+
+  try {
+    const emailFile = readFileSync(path.join(emailsDir, 'welcome.html'), {
+      encoding: 'utf8',
+    });
+
+    const emailTemplate = Handlebars.compile(emailFile);
+    await transporter.sendMail({
+      from: `"✨ SupaVacation" ${process.env.EMAIL_FROM}`,
+      to: email,
+      subject: 'Welcome to SupaVacation! 🎉',
+      html: emailTemplate({
+        base_url: process.env.NEXTAUTH_URL,
+        support_email: process.env.EMAIL_FROM,
+      }),
+    });
+  } catch (e) {
+    console.log(`❌ Unable to send welcome email to tu user ${email}`);
+  }
+};
+
 export const authOptions = {
   pages: {
     signIn: '/',
@@ -56,6 +79,9 @@ export const authOptions = {
       sendVerificationRequest,
     }),
   ],
+  events: {
+    createUser: sendWelcomeEmail,
+  },
 };
 
 export default NextAuth(authOptions);
