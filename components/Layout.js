@@ -75,12 +75,14 @@ const Layout = ({ children = null }) => {
                 </span>
               </Link>
               <div className="flex items-center space-x-4">
-                <Link
-                  href="/create"
+                <button
+                  onClick={() => {
+                    user ? router.push('/create') : openModal();
+                  }}
                   className="hidden sm:block hover:bg-gray-200 transition px-3 py-1 rounded-md"
                 >
                   List your home
-                </Link>
+                </button>
                 {isLoadingUser ? (
                   <div className="h-8 w-[75px] bg-gray-200 animate-pulse rounded-md" />
                 ) : user ? (

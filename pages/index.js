@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import Grid from '@/components/Grid';
 import { prisma } from '../server/db/client';
+import { getSession } from 'next-auth/react';
 
 export default function Home({ homes = [] }) {
   return (
@@ -18,8 +19,13 @@ export default function Home({ homes = [] }) {
   );
 }
 
-export async function getServerSideProps() {
-  const homes = await prisma.home.findMany();
+export async function getServerSideProps(context) {
+  let homes = [];
+  const session = await getSession(context);
+
+  if (session) {
+    homes = await prisma.home.findMany();
+  }
 
   return {
     props: {
