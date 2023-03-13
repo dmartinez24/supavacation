@@ -1,12 +1,12 @@
-import Link from "next/link";
-import Image from "next/image";
-import PropTypes from "prop-types";
-import { HeartIcon } from "@heroicons/react/solid";
+import Link from 'next/link';
+import Image from 'next/image';
+import PropTypes from 'prop-types';
+import { HeartIcon } from '@heroicons/react/solid';
 
 const Card = ({
-  id = "",
-  image = "",
-  title = "",
+  id = '',
+  image = '',
+  title = '',
   guests = 0,
   beds = 0,
   baths = 0,
@@ -14,8 +14,7 @@ const Card = ({
   favorite = false,
   onClickFavorite = () => null,
 }) => (
-  (<Link href={`/homes/${id}`} className="block w-full">
-
+  <Link href={`/homes/${id}`} className="block w-full">
     <div className="relative">
       <div className="bg-gray-200 rounded-lg shadow overflow-hidden aspect-w-16 aspect-h-9">
         {image ? (
@@ -32,7 +31,7 @@ const Card = ({
         type="button"
         onClick={(e) => {
           e.preventDefault();
-          if (typeof onClickFavorite === "function") {
+          if (typeof onClickFavorite === 'function') {
             onClickFavorite(id);
           }
         }}
@@ -40,13 +39,13 @@ const Card = ({
       >
         <HeartIcon
           className={`w-7 h-7 drop-shadow-lg transition ${
-            favorite ? "text-red-500" : "text-white"
+            favorite ? 'text-red-500' : 'text-white'
           }`}
         />
       </button>
     </div>
     <div className="mt-2 w-full text-gray-700 font-semibold leading-tight">
-      {title ?? ""}
+      {title ?? ''}
     </div>
     <ol className="mt-1 inline-flex items-center space-x-1 text-gray-500">
       <li>
@@ -62,14 +61,13 @@ const Card = ({
       </li>
     </ol>
     <p className="mt-2">
-      {new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(price ?? 0)}{" "}
+      {new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(price ?? 0)}{' '}
       <span className="text-gray-500">/night</span>
     </p>
-
-  </Link>)
+  </Link>
 );
 
 Card.propTypes = {
