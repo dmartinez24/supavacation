@@ -13,8 +13,25 @@ export async function handler(req, res) {
     select: { listedHomes: true },
   });
 
+  const { id } = req.query;
+
+  if (!user?.listedHomes?.find((home) => home.id === id)) {
+    return res.status(401).json({ message: 'Unauthorized.' });
+  }
+
   switch (method) {
     case 'PATCH':
+      try {
+        const home = await prisma.home.update({
+          where: { id },
+          data: req.body,
+        });
+
+        res.status(200).json(home);
+      } catch (e) {
+        res.status(500).json({ message: 'Something went wrong.' });
+      }
+      break;
 
     default:
       res.setHeader('Allow', ['PATCH']);
