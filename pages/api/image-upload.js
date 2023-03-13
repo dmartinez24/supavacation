@@ -1,11 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import { decode } from 'base64-arraybuffer';
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+import { supabase } from '../../server/db/client';
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -45,9 +40,6 @@ export default async function handler(req, res) {
         console.log(uploadError);
         throw new Error('Unable to upload image to storage');
       }
-
-      console.log('THIS IS THE DATA');
-      console.log(data);
 
       // Contruct public url
       const url = `${process.env.SUPABASE_URL}/storage/v1/object/public/${process.env.SUPABASE_BUCKET}/${data.path}`;
