@@ -19,6 +19,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   listedHomes   Home[]
+  favoriteHomes Home[]    @relation("FavoriteHomes")
 }
 
 model Home {
@@ -34,6 +35,7 @@ model Home {
   updatedAt   DateTime @updatedAt
   owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     String
+  userList    User[]   @relation("FavoriteHomes")
 }
 
 model Account {
