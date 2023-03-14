@@ -20,24 +20,24 @@ export default async function handler(req, res) {
   const home = user?.listedHomes?.find((home) => home.id === id);
 
   if (!home) {
-    res.status(401).json({ message: 'Unauthorized.' });
+    return res.status(401).json({ message: 'Unauthorized.' });
   }
 
   switch (method) {
     case 'PUT':
       try {
-        const homes = await prisma.user.update({
+        const user = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             favoriteHomes: {
               connect: {
-                id: home.id,
+                id,
               },
             },
           },
         });
 
-        res.status(200).json(homes);
+        res.status(200).json(home);
       } catch (e) {
         console.log(e);
         res.status(500).json({ message: 'Something went wrong.' });
@@ -45,15 +45,16 @@ export default async function handler(req, res) {
       break;
     case 'DELETE':
       try {
-        const deletedHome = await prisma.user.update({
+        const user = await prisma.user.update({
           where: { email: session.user.email },
           data: {
             favoriteHomes: {
-              disconnect: { id: home.id },
+              disconnect: { id },
             },
           },
         });
-        res.status(200).json(deletedHome);
+
+        res.status(200).json(home);
       } catch (e) {
         console.log(e);
         res.status(500).json({ message: 'Something went wrong.' });

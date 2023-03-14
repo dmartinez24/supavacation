@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import Grid from '@/components/Grid';
-import { getSession } from 'next-auth/react';
+import { getHomes } from '@/lib/homes';
 
 const Homes = ({ homes = [] }) => {
   return (
@@ -17,29 +17,7 @@ const Homes = ({ homes = [] }) => {
 };
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  const homes = await prisma.home.findMany({
-    where: {
-      owner: { email: session.user.email },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
-
-  return {
-    props: {
-      homes: JSON.parse(JSON.stringify(homes)),
-    },
-  };
+  return await getHomes(context);
 }
 
 export default Homes;

@@ -69,7 +69,6 @@ const AuthModal = ({ show = false, onClose = () => null }) => {
   const [showSignIn, setShowSignIn] = useState(false);
 
   const signInWithEmail = async ({ email }) => {
-    // TODO: Perform email auth
     let toastId;
     try {
       toastId = toast.loading('Loading...');

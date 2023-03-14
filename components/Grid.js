@@ -1,43 +1,11 @@
 import PropTypes from 'prop-types';
 import Card from '@/components/Card';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useUserFavorites } from '../data/use-user';
 
 const Grid = ({ homes = [] }) => {
-  const [favorites, setFavorites] = useState([]);
+  const { favoriteHomes, toggleFavorite } = useUserFavorites(homes);
   const isEmpty = homes.length === 0;
-
-  useEffect(() => {
-    let ignore = false;
-    (async () => {
-      try {
-        if (!ignore) {
-          const { data: favoriteHomes } = await axios.get(
-            `/api/user/favorites`
-          );
-          setFavorites(JSON.parse(JSON.stringify(favoriteHomes)));
-        }
-      } catch (e) {
-        setFavorites([]);
-      }
-    })();
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  const toggleFavorite = async (id) => {
-    const favoriteHome = favorites?.find((fav) => fav.id === id);
-
-    if (favoriteHome) {
-      setFavorites(favorites.filter((fav) => fav.id !== id));
-      await axios.delete(`/api/homes/${favoriteHome.id}/favorites`);
-    } else {
-      setFavorites([...favorites, homes.find((home) => home.id === id)]);
-      await axios.put(`/api/homes/${id}/favorites`);
-    }
-  };
 
   return isEmpty ? (
     <p className="text-amber-700 bg-amber-100 px-4 rounded-md py-2 max-w-max inline-flex items-center space-x-1">
@@ -51,9 +19,11 @@ const Grid = ({ homes = [] }) => {
           key={home.id}
           {...home}
           onClickFavorite={toggleFavorite}
-          favorite={favorites?.some((fav) => fav.id === home.id)}
+          favorite={favoriteHomes?.some((fav) => fav.id === home.id)}
         />
       ))}
+
+      {favoriteHomes?.length}
     </div>
   );
 };
