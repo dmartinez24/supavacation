@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import Grid from '@/components/Grid';
 import { getSession } from 'next-auth/react';
+import { prisma } from '../server/db/client';
 
 const Favorites = ({ homes = [] }) => {
   return (
